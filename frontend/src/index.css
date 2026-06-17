@@ -26,23 +26,24 @@
 
 html, body, #root {
   width: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;
   background: var(--ink);
   color: var(--frost);
   font-family: var(--body);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 /* Lock the viewport on desktop; let it breathe (scroll) on small screens */
 @media (min-width: 981px) {
-  html, body, #root { height: 100vh; overflow: hidden; }
+  html, body, #root { height: 100dvh; overflow: hidden; }
 }
 
 /* ---------- Layout shell ---------- */
 .app {
   position: relative;
   height: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   /* Reactive atmospheric wash behind everything */
@@ -66,7 +67,7 @@ html, body, #root {
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;
   padding: 22px 26px;
   gap: 18px;
 }
@@ -175,6 +176,7 @@ html, body, #root {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   box-shadow: 0 24px 60px -28px rgba(0,0,0,0.7);
+  min-width: 0;
 }
 
 .eyebrow {
@@ -284,20 +286,33 @@ html, body, #root {
 
 /* ---------- Responsive ---------- */
 @media (max-width: 980px) {
-  .shell { padding: 18px 16px; gap: 14px; }
+  .shell { padding: 16px 16px calc(16px + env(safe-area-inset-bottom)); gap: 14px; }
   .stage { grid-template-columns: 1fr; }
   .console { grid-template-rows: none; }
-  .mapwrap { min-height: 320px; }
+  .mapwrap { min-height: 300px; }
   .field input { width: 140px; }
-  .chart .body { height: 280px; }
+  .chart .body { height: 260px; }
 }
+
+/* Tall, narrow phones — 16:9 (~360w) and 19.5:9 (~390w) in portrait */
 @media (max-width: 560px) {
-  .herorow { grid-template-columns: 1fr; }
-  .conditions { flex-wrap: wrap; gap: 12px 0; }
-  .readout { flex: 1 1 50%; border-right: none; }
+  .shell { padding: 14px 12px calc(14px + env(safe-area-inset-bottom)); gap: 12px; }
+  .topbar { gap: 12px; }
+  .wordmark { font-size: 1.2rem; }
   .controls { width: 100%; }
   .field { flex: 1; }
   .field input { width: 100%; }
+  .herorow { grid-template-columns: 1fr; gap: 12px; }
+  .hero { padding: 18px; }
+  .hero .nextrain { font-size: 1.05rem; }
+  .conditions { flex-wrap: wrap; gap: 14px 0; padding: 14px 6px; }
+  .readout { flex: 1 1 50%; border-right: none; padding: 0 6px; }
+  .readout .v { font-size: 1.3rem; }
+  .chart { padding: 16px 10px 4px; }
+  .chart .body { height: 230px; }
+  .mapwrap { min-height: 280px; }
+  .center-state { min-height: 50dvh; }
+  .errbox { margin: 0 4px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
