@@ -26,13 +26,16 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-# Comma-separated list of allowed origins; defaults to local dev.
-# In production set FRONTEND_ORIGIN to your deployed frontend URL.
-ALLOWED_ORIGINS = os.getenv("FRONTEND_ORIGIN", "http://localhost:5173").split(",")
+# Allow local dev plus every Vercel URL for this project (production + previews).
+# Override with FRONTEND_ORIGIN_REGEX if your project name differs.
+ALLOWED_ORIGIN_REGEX = os.getenv(
+    "FRONTEND_ORIGIN_REGEX",
+    r"http://localhost:5173|https://rainfall-predictor.*\.vercel\.app",
+)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[o.strip() for o in ALLOWED_ORIGINS],
+    allow_origin_regex=ALLOWED_ORIGIN_REGEX,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
